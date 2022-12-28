@@ -68,10 +68,10 @@ fun OhmCircle(
 ) {
     val texts : List<String> =
     listOf(
-        "V·I", "P/V",
-        "V²/R", "√(P/R)",
-        "I²·R", "V/R",
-        "I·R", "V/I",
+        "U·I", "P/U",
+        "U²/R", "√(P/R)",
+        "I²·R", "U/R",
+        "I·R", "U/I",
         "P/I", "P/I²",
         "√(P·R)", "V²/P",
     )
@@ -120,7 +120,7 @@ fun InnerOhmCircle(
     texts: List<String> =
         listOf(
             "P", "I",
-            "V", "R",
+            "U", "R",
         )
 ){
     CircleBox(
@@ -156,13 +156,12 @@ fun InnerOhmCircle(
 
 @Composable
 fun InputCard(
-    labelId : String,
+    labelId: String,
     checkboxState: MutableState<Boolean>,
     unitOptions: List<String> = emptyList(),
-    valueState : MutableState<String>,
-    unitState : MutableState<String>
+    valueState: MutableState<String>,
+    unitState: MutableState<String>,
 ){
-
     Row (
         modifier = Modifier
             .requiredHeight(70.dp)

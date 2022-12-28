@@ -21,6 +21,15 @@ import com.example.calculohm.components.InnerOhmCircle
 import com.example.calculohm.components.InputCard
 import com.example.calculohm.components.OhmCircle
 import com.example.calculohm.ui.theme.CalculOhmTheme
+import com.example.calculohm.utils.State
+import com.example.calculohm.utils.calculate
+import com.example.calculohm.utils.exactlyTwoChecked
+
+val RES_UNIT = listOf("mΩ","Ω", "kΩ", "MΩ", "GΩ")
+val VOL_UNIT = listOf("mV","V", "kV", "MV", "GV")
+val AMP_UNIT = listOf("mA","A", "kA", "MA", "GA")
+val POW_UNIT = listOf("mW","W", "kW", "MW", "GW")
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,64 +59,24 @@ fun MyApp(content: @Composable () -> Unit) {
 
 @Composable
 fun MainContent() {
-    val unitOptionsRes = listOf("mΩ","Ω", "kΩ", "MΩ", "GΩ")
-    val unitOptionsPot = listOf("mW","W", "kW", "MW", "GW")
-    val unitOptionsVolt = listOf("mV","V", "kV", "MV")
-    val unitOptionsAmp = listOf("mA","A", "kA")
+    val state = remember { mutableStateOf(State()) }
     val warningCardVisible = remember { mutableStateOf(true) }
-    val checkBoxStateRes = remember { mutableStateOf(false) }
-    val valueStateRes = remember { mutableStateOf("") }
-    val unitStateRes = remember { mutableStateOf("")}
-    val checkBoxStatePot = remember { mutableStateOf(false) }
-    val valueStatePot = remember { mutableStateOf("") }
-    val unitStatePot = remember { mutableStateOf("") }
-    val checkBoxStateVolt = remember { mutableStateOf(false) }
-    val valueStateVolt = remember { mutableStateOf("") }
-    val unitStateVolt = remember { mutableStateOf("") }
-    val checkBoxStateAmp = remember { mutableStateOf(false) }
-    val valueStateAmp = remember { mutableStateOf("") }
-    val unitStateAmp = remember { mutableStateOf("") }
-
-
+    warningCardVisible.value = !exactlyTwoChecked(state.value)
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
     ){
         TopHeader()
         WarningCard(warningCardVisible.value)
-        InputCard(
-            labelId= "Resistance (R)",
-            checkboxState = checkBoxStateRes,
-            unitOptions = unitOptionsRes,
-            valueState = valueStateRes,
-            unitState = unitStateRes,
-        )
-        InputCard(
-            labelId= "Power (P)",
-            checkboxState = checkBoxStatePot,
-            unitOptions = unitOptionsPot,
-            valueState = valueStatePot,
-            unitState = unitStatePot,
-        )
-        InputCard(
-            labelId= "Voltage (V)",
-            checkboxState = checkBoxStateVolt,
-            unitOptions = unitOptionsVolt,
-            valueState = valueStateVolt,
-            unitState = unitStateVolt,
-        )
-        InputCard(
-            labelId= "Current (I)",
-            checkboxState = checkBoxStateAmp,
-            unitOptions = unitOptionsAmp,
-            valueState = valueStateAmp,
-            unitState = unitStateAmp,
-        )
+        InputCards(state.value)
+        Calculate(state.value)
 
 
     }
 
 }
+
+
 
 @Preview(showBackground = true)
 @Composable
@@ -150,9 +119,77 @@ fun WarningCard(
                 modifier = Modifier.padding(10.dp)
             )
         }
+
+    }else{
+        Spacer(modifier = Modifier
+            .height(60.dp)
+            .padding(15.dp))
     }
 }
 
+@Composable
+fun InputCards(state: State) {
+    val unitOptionsR = RES_UNIT
+    val unitOptionsU = VOL_UNIT
+    val unitOptionsI = AMP_UNIT
+    val unitOptionsP = POW_UNIT
+
+    InputCard(
+        labelId = "Resistance (R)",
+        unitOptions = unitOptionsR,
+        checkboxState = state.checkbox.R,
+        valueState = state.value.R,
+        unitState = state.unit.R,
+    )
+    InputCard(
+        labelId = "Power (P)",
+        unitOptions = unitOptionsP,
+        checkboxState = state.checkbox.P,
+        valueState = state.value.P,
+        unitState = state.unit.P,
+    )
+    InputCard(
+        labelId = "Voltage (U)",
+        unitOptions = unitOptionsU,
+        checkboxState = state.checkbox.U,
+        valueState =  state.value.U,
+        unitState = state.unit.U,
+    )
+    InputCard(
+        labelId = "Current (I)",
+        unitOptions = unitOptionsI,
+        checkboxState =  state.checkbox.I,
+        valueState = state.value.I,
+        unitState = state.unit.I,
+    )
+    exactlyTwoChecked(state)
+}
+
+@Composable
+fun Calculate(
+    state: State,
+) {
+
+    Button(
+        onClick = {
+            if (exactlyTwoChecked(state)) {
+                calculate(state)
+            }
+
+        },
+        modifier = Modifier
+            .padding(16.dp)
+            .fillMaxWidth()
+            .clip(RoundedCornerShape(corner = CornerSize(16.dp))),
+        colors = ButtonDefaults.buttonColors(
+            backgroundColor = Color(0xFF00A8E8),
+            contentColor = Color.White
+        )
+    ) {
+        Text(text = "Calculate")
+    }
+
+}
 
 
 
