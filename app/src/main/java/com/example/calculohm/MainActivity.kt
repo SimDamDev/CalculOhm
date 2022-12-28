@@ -1,7 +1,6 @@
 package com.example.calculohm
 
 import android.os.Bundle
-import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.*
@@ -9,23 +8,19 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.key.Key.Companion.D
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.calculohm.components.InnerOhmCircle
 import com.example.calculohm.components.InputCard
-import com.example.calculohm.components.InputField
-import com.example.calculohm.components.OhmCirlceBox
+import com.example.calculohm.components.OhmCircle
 import com.example.calculohm.ui.theme.CalculOhmTheme
-import com.example.calculohm.widgets.SelectUnit
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -125,7 +120,7 @@ fun TopHeader() {
         .clip(shape = RoundedCornerShape(corner = CornerSize(12.dp))),
     color = Color(0xFFE9D7F7)
     ) {
-        OhmCirlceBox(
+        OhmCircle(
             size= 200
         )
         InnerOhmCircle (

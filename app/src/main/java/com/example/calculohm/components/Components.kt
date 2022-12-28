@@ -15,9 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.calculohm.utils.ColorList
@@ -57,7 +55,7 @@ fun InputField(
 
 
 @Composable
-fun OhmCirlceBox(
+fun OhmCircle(
     size: Int = 200,
     colors: ColorList =
         ColorList(
@@ -81,23 +79,24 @@ fun OhmCirlceBox(
 
     CircleBox(
         size = size,
+        outline = false,
         content = {
-            drawArcCol(
+            DrawArc(
                 startAngle = 0f,
                 sweepAngle = 90f,
                 color = colors.col1
             )
-            drawArcCol(
+            DrawArc(
                 startAngle = 90f,
                 sweepAngle = 90f,
                 color = colors.col2
             )
-            drawArcCol(
+            DrawArc(
                 startAngle = 180f,
                 sweepAngle = 90f,
                 color = colors.col3
             )
-            drawArcCol(
+            DrawArc(
                 startAngle = 270f,
                 sweepAngle = 90f,
                 color = colors.col4
@@ -124,30 +123,32 @@ fun InnerOhmCircle(
             "V", "R",
         )
 ){
-    OutlinedCircleBox(
+    CircleBox(
         size = size,
+        outlineColor = Color.Black,
+        outline = true,
         content = {
-            drawArcCol(
+            DrawArc(
                 startAngle = 0f,
                 sweepAngle = 90f,
                 color = colors.col1
             )
-            drawArcCol(
+            DrawArc(
                 startAngle = 90f,
                 sweepAngle = 90f,
                 color = colors.col2
             )
-            drawArcCol(
+            DrawArc(
                 startAngle = 180f,
                 sweepAngle = 90f,
                 color = colors.col3
             )
-            drawArcCol(
+            DrawArc(
                 startAngle = 270f,
                 sweepAngle = 90f,
                 color = colors.col4
             )
-            innerTextGrid(
+            InnerTextGrid(
                 height = size.dp, width = size.dp, texts = texts)
         }
     )

@@ -21,62 +21,34 @@ import androidx.compose.ui.unit.sp
 // a composable function that draws a circle with the color passed as parameter
 @Composable
 fun CircleBox(
-    size:Int = 100,
-    color: Color = Color.White,
-    content: @Composable () -> Unit)
-{
-    Box(
-        modifier = Modifier
-            .size(size.dp),
-        contentAlignment = Alignment.Center
-    ){
-        Surface(
-            shape = CircleShape,
-            modifier = Modifier
-                .padding(5.dp)
-                .size(size.dp),
-            color = color
-        ) {
-                content()
-        }
-
-    }
-
-}
-
-// a composable function that draws a circle with the color passed as parameter and a outlined border
-@Composable
-fun OutlinedCircleBox(
-    size:Int = 100,
+    size: Int = 100,
     color: Color = Color.White,
     outlineColor : Color = Color.Black,
-    content: @Composable () -> Unit)
-{
+    outline : Boolean = false,
+    content: @Composable () -> Unit
+) {
     Box(
         modifier = Modifier
             .size(size.dp),
         contentAlignment = Alignment.Center
-    ){
+    ) {
         Surface(
             shape = CircleShape,
             modifier = Modifier
                 .padding(5.dp)
                 .size(size.dp),
             color = color,
-            border = BorderStroke(2.dp, outlineColor)
+            border = if(outline) {BorderStroke(2.dp, outlineColor)} else {null}
         ) {
             content()
         }
-
     }
-
 }
-
 
 
 // a composable function that draws a arc of circle with a given angle and color
 @Composable
-fun drawArcCol(
+fun DrawArc(
     color: Color = Color.Red,
     startAngle: Float = 0f,
     sweepAngle: Float = 90f,
@@ -101,9 +73,9 @@ fun TextGrid(
     width: Dp,
     texts: List<String>
 ) {
-    val hSpacer = height.value / 8
-    val wSpacer = width.value / 8
-    val wSpacings = listOf(1.5f, 4f, 5f, 5f, 4f, 1.5f)
+    val horizontalSpacer = height.value / 8
+    val widthSpacer = width.value / 8
+    val widthSpacings = listOf(1.5f, 4f, 5f, 5f, 4f, 1.5f)
     val fontSize = width.value / 16
 
     Column(
@@ -115,16 +87,16 @@ fun TextGrid(
     ) {
         for (i in 1..6) {
             Row(
-                modifier = Modifier.height(hSpacer.dp)
+                modifier = Modifier.height(horizontalSpacer.dp)
             ) {
-                val currentSpacing = wSpacer * wSpacings[i - 1]
+                val currentSpacing = widthSpacer * widthSpacings[i - 1]
 
                 Text(
                     text = texts[i * 2 - 2],
                     style = TextStyle(fontSize = fontSize.sp),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .height(hSpacer.dp)
+                        .height(horizontalSpacer.dp)
                 )
                 Spacer(Modifier.size(width = currentSpacing.dp, height = 0.dp))
                 Text(
@@ -132,7 +104,7 @@ fun TextGrid(
                     style = TextStyle(fontSize = fontSize.sp),
                     textAlign = TextAlign.Center,
                     modifier = Modifier
-                        .height(hSpacer.dp)
+                        .height(horizontalSpacer.dp)
                 )
             }
         }
@@ -141,7 +113,7 @@ fun TextGrid(
 
 // a composable function to draw a grid of text in a circle (2*2)
 @Composable
-fun innerTextGrid(
+fun InnerTextGrid(
     height: Dp,
     width: Dp,
     texts: List<String>
