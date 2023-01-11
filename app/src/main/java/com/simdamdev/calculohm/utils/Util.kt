@@ -24,50 +24,50 @@ class State(
 ) {
     /**
      * CheckboxState - Inner class which holds the checkbox state information
-     * @property R holds R checkbox state information
-     * @property I holds I checkbox state information
-     * @property U holds U checkbox state information
-     * @property P holds P checkbox state information
+     * @property r holds R checkbox state information
+     * @property i holds I checkbox state information
+     * @property u holds U checkbox state information
+     * @property p holds P checkbox state information
      *
      */
     class CheckboxState(
-        var R: MutableState<Boolean> = mutableStateOf(false),
-        var I: MutableState<Boolean> = mutableStateOf(false),
-        var U: MutableState<Boolean> = mutableStateOf(false),
-        var P: MutableState<Boolean> = mutableStateOf(false)
+        var r: MutableState<Boolean> = mutableStateOf(false),
+        var i: MutableState<Boolean> = mutableStateOf(false),
+        var u: MutableState<Boolean> = mutableStateOf(false),
+        var p: MutableState<Boolean> = mutableStateOf(false)
     ){
         // List of all checkbox states
-        val checkboxList : List<MutableState<Boolean>> = listOf(R,I,U,P)
+        val checkboxList : List<MutableState<Boolean>> = listOf(r,i,u,p)
     }
 
     /**
      * ValueState - Inner class which holds the value state information
-     * @property R holds R value state information
-     * @property I holds I value state information
-     * @property U holds U value state information
-     * @property P holds P value state information
+     * @property r holds R value state information
+     * @property i holds I value state information
+     * @property u holds U value state information
+     * @property p holds P value state information
      *
      */
     class ValueState(
-        var R: MutableState<String> = mutableStateOf(""),
-        var I: MutableState<String> = mutableStateOf(""),
-        var U: MutableState<String> = mutableStateOf(""),
-        var P: MutableState<String> = mutableStateOf("")
+        var r: MutableState<String> = mutableStateOf(""),
+        var i: MutableState<String> = mutableStateOf(""),
+        var u: MutableState<String> = mutableStateOf(""),
+        var p: MutableState<String> = mutableStateOf("")
     )
 
     /**
      * UnitState - Inner class which holds the unit state information
-     * @property R holds R unit state information
-     * @property I holds I unit state information
-     * @property U holds U unit state information
-     * @property P holds P unit state information
+     * @property r holds R unit state information
+     * @property i holds I unit state information
+     * @property u holds U unit state information
+     * @property p holds P unit state information
      *
      */
     class UnitState(
-        var R: MutableState<String> = mutableStateOf(""),
-        var I: MutableState<String> = mutableStateOf(""),
-        var U: MutableState<String> = mutableStateOf(""),
-        var P: MutableState<String> = mutableStateOf("")
+        var r: MutableState<String> = mutableStateOf(""),
+        var i: MutableState<String> = mutableStateOf(""),
+        var u: MutableState<String> = mutableStateOf(""),
+        var p: MutableState<String> = mutableStateOf("")
     )
 }
 
@@ -191,93 +191,93 @@ fun createUnit(n: Double, suffix: String): String {
 }
 
 fun calculate(state: State) {
-    var rFactor = unitToFactor(state.unit.R.value)
-    var iFactor = unitToFactor(state.unit.I.value)
-    var uFactor = unitToFactor(state.unit.U.value)
-    var pFactor = unitToFactor(state.unit.P.value)
-    val rTemp = state.value.R.value.toDoubleOrNull()?.times(rFactor)
-    val iTemp = state.value.I.value.toDoubleOrNull()?.times(iFactor)
-    val uTemp = state.value.U.value.toDoubleOrNull()?.times(uFactor)
-    val pTemp = state.value.P.value.toDoubleOrNull()?.times(pFactor)
+    var rFactor = unitToFactor(state.unit.r.value)
+    var iFactor = unitToFactor(state.unit.i.value)
+    var uFactor = unitToFactor(state.unit.u.value)
+    var pFactor = unitToFactor(state.unit.p.value)
+    val rTemp = state.value.r.value.toDoubleOrNull()?.times(rFactor)
+    val iTemp = state.value.i.value.toDoubleOrNull()?.times(iFactor)
+    val uTemp = state.value.u.value.toDoubleOrNull()?.times(uFactor)
+    val pTemp = state.value.p.value.toDoubleOrNull()?.times(pFactor)
 
     // Calculate unknown variables using Ohm's law
-    if (state.checkbox.R.value && state.checkbox.I.value) {
+    if (state.checkbox.r.value && state.checkbox.i.value) {
         if (rTemp != null && iTemp != null) {
             val u = rTemp * iTemp
             val p = u * iTemp
             val uUnit = createUnit(u, "V")
-            state.unit.U.value = uUnit
+            state.unit.u.value = uUnit
             uFactor = unitToFactor(uUnit)
-            state.value.U.value = (u / uFactor).toString()
+            state.value.u.value = (u / uFactor).toString()
             val pUnit = createUnit(p, "W")
-            state.unit.P.value = pUnit
+            state.unit.p.value = pUnit
             pFactor = unitToFactor(pUnit)
-            state.value.P.value = (p / pFactor).toString()
+            state.value.p.value = (p / pFactor).toString()
         }
-    } else if (state.checkbox.R.value && state.checkbox.U.value) {
+    } else if (state.checkbox.r.value && state.checkbox.u.value) {
         if (rTemp != null && uTemp != null) {
             val i = uTemp / rTemp
             val p = uTemp * i
             val iUnit = createUnit(i, "A")
-            state.unit.I.value = iUnit
+            state.unit.i.value = iUnit
             iFactor = unitToFactor(iUnit)
-            state.value.I.value = (i / iFactor).toString()
+            state.value.i.value = (i / iFactor).toString()
             val pUnit = createUnit(p, "W")
-            state.unit.P.value = pUnit
+            state.unit.p.value = pUnit
             pFactor = unitToFactor(pUnit)
-            state.value.P.value = (p / pFactor).toString()
+            state.value.p.value = (p / pFactor).toString()
         }
-    } else if (state.checkbox.R.value && state.checkbox.P.value) {
+    } else if (state.checkbox.r.value && state.checkbox.p.value) {
         if (rTemp != null && pTemp != null) {
             val i = sqrt(pTemp / rTemp)
             val u = rTemp * i
             val iUnit = createUnit(i, "A")
-            state.unit.I.value = iUnit
+            state.unit.i.value = iUnit
             iFactor = unitToFactor(iUnit)
-            state.value.I.value = (i / iFactor).toString()
+            state.value.i.value = (i / iFactor).toString()
             val uUnit = createUnit(u, "V")
-            state.unit.U.value = uUnit
+            state.unit.u.value = uUnit
             uFactor = unitToFactor(uUnit)
-            state.value.U.value = (u / uFactor).toString()
+            state.value.u.value = (u / uFactor).toString()
         }
-    } else if (state.checkbox.I.value && state.checkbox.U.value) {
+    } else if (state.checkbox.i.value && state.checkbox.u.value) {
         if (iTemp != null && uTemp != null) {
             val p = iTemp * uTemp
             val r = uTemp / iTemp
             val pUnit = createUnit(p, "W")
-            state.unit.P.value = pUnit
+            state.unit.p.value = pUnit
             pFactor = unitToFactor(pUnit)
-            state.value.P.value = (p / pFactor).toString()
+            state.value.p.value = (p / pFactor).toString()
             val rUnit = createUnit(r, "Ω")
-            state.unit.R.value = rUnit
+            state.unit.r.value = rUnit
             rFactor = unitToFactor(rUnit)
-            state.value.R.value = (r / rFactor).toString()
+            state.value.r.value = (r / rFactor).toString()
         }
-    } else if (state.checkbox.I.value && state.checkbox.P.value) {
+    } else if (state.checkbox.i.value && state.checkbox.p.value) {
         if (iTemp != null && pTemp != null) {
             val u = pTemp / iTemp
             val r = u / iTemp
             val uUnit = createUnit(u, "V")
-            state.unit.U.value = uUnit
+            state.unit.u.value = uUnit
             uFactor = unitToFactor(uUnit)
-            state.value.U.value = (u / uFactor).toString()
+            state.value.u.value = (u / uFactor).toString()
             val rUnit = createUnit(r, "Ω")
-            state.unit.R.value = rUnit
+            state.unit.r.value = rUnit
             rFactor = unitToFactor(rUnit)
-            state.value.R.value = (r / rFactor).toString()
+            state.value.r.value = (r / rFactor).toString()
         }
-    } else if (state.checkbox.U.value && state.checkbox.P.value) {
+    } else if (state.checkbox.u.value && state.checkbox.p.value) {
         if (uTemp != null && pTemp != null) {
             val i = pTemp / uTemp
             val r = uTemp / i
             val iUnit = createUnit(i, "A")
-            state.unit.I.value = iUnit
+            state.unit.i.value = iUnit
             iFactor = unitToFactor(iUnit)
-            state.value.I.value = (i / iFactor).toString()
+            state.value.i.value = (i / iFactor).toString()
             val rUnit = createUnit(r, "Ω")
-            state.unit.R.value = rUnit
+            state.unit.r.value = rUnit
             rFactor = unitToFactor(rUnit)
-            state.value.R.value = (r / rFactor).toString()
+            state.value.r.value = (r / rFactor).toString()
         }
     }
 }
