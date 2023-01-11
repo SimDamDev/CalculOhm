@@ -1,4 +1,4 @@
-package com.example.calculohm
+package com.simdamdev.calculohm
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -17,13 +17,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.calculohm.components.InnerOhmCircle
-import com.example.calculohm.components.InputCard
-import com.example.calculohm.components.OhmCircle
-import com.example.calculohm.ui.theme.CalculOhmTheme
-import com.example.calculohm.utils.State
-import com.example.calculohm.utils.calculate
-import com.example.calculohm.utils.exactlyTwoChecked
+import com.simdamdev.calculohm.components.InnerOhmCircle
+import com.simdamdev.calculohm.components.InputCard
+import com.simdamdev.calculohm.components.OhmCircle
+import com.simdamdev.calculohm.ui.theme.CalculOhmTheme
+import com.simdamdev.calculohm.utils.State
+import com.simdamdev.calculohm.utils.calculate
+import com.simdamdev.calculohm.utils.exactlyTwoChecked
 
 val RES_UNIT = listOf("mΩ","Ω", "kΩ", "MΩ", "GΩ")
 val VOL_UNIT = listOf("mV","V", "kV", "MV", "GV")

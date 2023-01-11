@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.calculohm'
+    namespace 'com.simdamdev.calculohm'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.calculohm"
+        applicationId "com.simdamdev.calculohm"
         minSdk 21
         targetSdk 33
         versionCode 1

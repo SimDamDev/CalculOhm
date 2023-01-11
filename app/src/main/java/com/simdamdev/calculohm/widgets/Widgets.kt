@@ -1,4 +1,4 @@
-package com.example.calculohm.widgets
+package com.simdamdev.calculohm.widgets
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Canvas

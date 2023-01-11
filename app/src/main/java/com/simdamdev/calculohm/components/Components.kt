@@ -1,4 +1,4 @@
-package com.example.calculohm.components
+package com.simdamdev.calculohm.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
@@ -18,8 +18,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.calculohm.utils.ColorList
-import com.example.calculohm.widgets.*
+import com.simdamdev.calculohm.utils.ColorList
+import com.simdamdev.calculohm.widgets.*
 
 @Composable
 fun InputField(
@@ -65,7 +65,7 @@ fun OhmCircle(
             Color(0xFF2196F3),
         ),
 
-) {
+    ) {
     val texts : List<String> =
     listOf(
         "U·I", "P/U",

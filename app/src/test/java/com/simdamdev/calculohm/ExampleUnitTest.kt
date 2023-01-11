@@ -1,4 +1,4 @@
-package com.example.calculohm
+package com.simdamdev.calculohm
 
 import org.junit.Test
 

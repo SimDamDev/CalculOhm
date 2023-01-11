@@ -1,4 +1,4 @@
-package com.example.calculohm.ui.theme
+package com.simdamdev.calculohm.ui.theme
 
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
