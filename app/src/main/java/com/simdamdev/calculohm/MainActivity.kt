@@ -111,7 +111,7 @@ fun WarningCard(
         ) {
             Text(
                 text = "Select and enter only two parameters and let the calculator handle the rest for you!",
-                style = MaterialTheme.typography.body1,
+                style = MaterialTheme.typography.body1.copy(color= Color(0xFF333333)),
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(10.dp)
             )

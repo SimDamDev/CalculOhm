@@ -21,6 +21,8 @@ import androidx.compose.ui.unit.sp
 import com.simdamdev.calculohm.utils.ColorsList
 import com.simdamdev.calculohm.widgets.*
 
+
+
 @Composable
 fun InputField(
     modifier: Modifier = Modifier,
@@ -32,9 +34,15 @@ fun InputField(
     imeAction: ImeAction = ImeAction.Next,
     onAction: KeyboardActions = KeyboardActions.Default
 ) {
+    val positiveNumberPattern = "^[0-9]*[.]?[0-9]*\$".toRegex()
+
     OutlinedTextField(
         value = valueState.value,
-        onValueChange = { valueState.value = it },
+        onValueChange = {
+            if(it.matches(positiveNumberPattern)) {
+                valueState.value = it
+            }
+        },
         label = { Text(labelId) },
         singleLine = isSingleLine,
         textStyle = TextStyle(
