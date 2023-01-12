@@ -18,7 +18,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.simdamdev.calculohm.utils.ColorList
+import com.simdamdev.calculohm.utils.ColorsList
 import com.simdamdev.calculohm.widgets.*
 
 @Composable
@@ -57,8 +57,8 @@ fun InputField(
 @Composable
 fun OhmCircle(
     size: Int = 200,
-    colors: ColorList =
-        ColorList(
+    colors: ColorsList =
+        ColorsList(
             Color(0xFFF44336),
             Color(0xFFFF9800),
             Color(0xFF4CAF50),
@@ -110,8 +110,8 @@ fun OhmCircle(
 @Composable
 fun InnerOhmCircle(
     size: Int = 50,
-    colors: ColorList =
-        ColorList(
+    colors: ColorsList =
+        ColorsList(
             Color(0xFFF44336),
             Color(0xFFFF9800),
             Color(0xFF4CAF50),
