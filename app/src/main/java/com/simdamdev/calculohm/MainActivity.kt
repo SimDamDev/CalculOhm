@@ -170,16 +170,16 @@ fun Calculate(
 ) {
     Button(
         onClick = {
-            if (state.checkbox.R.value) {
+            if (state.checkbox.r.value) {
                 state.value.convertR()
             }
-            if (state.checkbox.U.value) {
+            if (state.checkbox.u.value) {
                 state.value.convertU()
             }
-            if (state.checkbox.I.value) {
+            if (state.checkbox.i.value) {
                 state.value.convertI()
             }
-            if (state.checkbox.P.value) {
+            if (state.checkbox.p.value) {
                 state.value.convertP()
             }
             if (exactlyTwoChecked(state)) {

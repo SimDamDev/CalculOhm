@@ -5,15 +5,15 @@ import androidx.compose.runtime.mutableStateOf
 
 /**
  * UnitState - Inner class which holds the unit state information
- * @property R holds R unit state information
- * @property I holds I unit state information
- * @property U holds U unit state information
- * @property P holds P unit state information
+ * @property r holds R unit state information
+ * @property i holds I unit state information
+ * @property u holds U unit state information
+ * @property p holds P unit state information
  *
  */
 class UnitState(
-    var R: MutableState<String> = mutableStateOf(""),
-    var I: MutableState<String> = mutableStateOf(""),
-    var U: MutableState<String> = mutableStateOf(""),
-    var P: MutableState<String> = mutableStateOf("")
+    var r: MutableState<String> = mutableStateOf(""),
+    var i: MutableState<String> = mutableStateOf(""),
+    var u: MutableState<String> = mutableStateOf(""),
+    var p: MutableState<String> = mutableStateOf("")
 )
