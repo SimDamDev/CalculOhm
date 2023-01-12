@@ -23,28 +23,28 @@ class State(
 ) {
     /**
      * CheckboxState - Inner class which holds the checkbox state information
-     * @property R holds R checkbox state information
-     * @property I holds I checkbox state information
-     * @property U holds U checkbox state information
-     * @property P holds P checkbox state information
+     * @property r holds R checkbox state information
+     * @property i holds I checkbox state information
+     * @property u holds U checkbox state information
+     * @property p holds P checkbox state information
      *
      */
     class CheckboxState(
-        var R: MutableState<Boolean> = mutableStateOf(false),
-        var I: MutableState<Boolean> = mutableStateOf(false),
-        var U: MutableState<Boolean> = mutableStateOf(false),
-        var P: MutableState<Boolean> = mutableStateOf(false)
+        var r: MutableState<Boolean> = mutableStateOf(false),
+        var i: MutableState<Boolean> = mutableStateOf(false),
+        var u: MutableState<Boolean> = mutableStateOf(false),
+        var p: MutableState<Boolean> = mutableStateOf(false)
     ){
         // List of all checkbox states
-        val checkboxList : List<MutableState<Boolean>> = listOf(R,I,U,P)
+        val checkboxList : List<MutableState<Boolean>> = listOf(r,i,u,p)
     }
 
     /**
      * ValueState - Inner class which holds the value state information
-     * @property R holds R value state information
-     * @property I holds I value state information
-     * @property U holds U value state information
-     * @property P holds P value state information
+     * @property r holds R value state information
+     * @property i holds I value state information
+     * @property u holds U value state information
+     * @property p holds P value state information
      *
      */
     class ValueState(
@@ -91,19 +91,20 @@ class State(
             }
         }
 
+
     /**
      * UnitState - Inner class which holds the unit state information
-     * @property R holds R unit state information
-     * @property I holds I unit state information
-     * @property U holds U unit state information
-     * @property P holds P unit state information
+     * @property r holds R unit state information
+     * @property i holds I unit state information
+     * @property u holds U unit state information
+     * @property p holds P unit state information
      *
      */
     class UnitState(
-        var R: MutableState<String> = mutableStateOf(""),
-        var I: MutableState<String> = mutableStateOf(""),
-        var U: MutableState<String> = mutableStateOf(""),
-        var P: MutableState<String> = mutableStateOf("")
+        var r: MutableState<String> = mutableStateOf(""),
+        var i: MutableState<String> = mutableStateOf(""),
+        var u: MutableState<String> = mutableStateOf(""),
+        var p: MutableState<String> = mutableStateOf("")
     )
 }
 
@@ -324,6 +325,7 @@ fun updateValue(state: State, valueName: String, newValue: Double) {
         "P" -> {
             state.value.P.value = convertedValue.toString()
             state.unit.P.value = createUnit(newValue, suffix)
+
         }
     }
 }
