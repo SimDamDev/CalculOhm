@@ -5,18 +5,18 @@ import androidx.compose.runtime.mutableStateOf
 
 /**
  * CheckboxState - Inner class which holds the checkbox state information
- * @property R holds R checkbox state information
- * @property I holds I checkbox state information
- * @property U holds U checkbox state information
- * @property P holds P checkbox state information
+ * @property r holds R checkbox state information
+ * @property i holds I checkbox state information
+ * @property u holds U checkbox state information
+ * @property p holds P checkbox state information
  *
  */
 class CheckboxState(
-    var R: MutableState<Boolean> = mutableStateOf(false),
-    var I: MutableState<Boolean> = mutableStateOf(false),
-    var U: MutableState<Boolean> = mutableStateOf(false),
-    var P: MutableState<Boolean> = mutableStateOf(false)
+    var r: MutableState<Boolean> = mutableStateOf(false),
+    var i: MutableState<Boolean> = mutableStateOf(false),
+    var u: MutableState<Boolean> = mutableStateOf(false),
+    var p: MutableState<Boolean> = mutableStateOf(false)
 ){
     // List of all checkbox states
-    val checkboxList : List<MutableState<Boolean>> = listOf(R,I,U,P)
+    val checkboxList : List<MutableState<Boolean>> = listOf(r,i,u,p)
 }

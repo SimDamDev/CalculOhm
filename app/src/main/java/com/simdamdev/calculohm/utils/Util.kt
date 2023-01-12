@@ -56,9 +56,11 @@ fun unitToFactor(unit: String): Double {
     val prefix = if (unit.length > 1) {
         "${unit[0]}"
     } else {
-        "1"
+        ""
     }
-    return Units.fromPrefix(prefix).factor
+    val temp = Units.fromPrefix(prefix)
+    Log.d("UnitToFactor", "prefix: $prefix, factor: $temp")
+    return Units.fromPrefix(prefix)
 }
 
 /**
@@ -118,10 +120,10 @@ fun findMissing(state: State): List<String> {
 }
 
 fun updateValues(state: State) {
-    val u = state.value.U_transformed.value
-    val i = state.value.I_transformed.value
-    val r = state.value.R_transformed.value
-    val p = state.value.P_transformed.value
+    val u = state.value.uTransformed.value
+    val i = state.value.iTransformed.value
+    val r = state.value.rTransformed.value
+    val p = state.value.pTransformed.value
     val missing = findMissing(state)
     if (missing.contains("R")) {
         val newR = calculateR(u, i, p)
@@ -151,25 +153,25 @@ fun updateValue(state: State, valueName: String, newValue: Double) {
             else -> ""
         }
     val prefix = Units.fromFactor(newValue)
-    val factor = Units.fromPrefix(prefix).factor
+    val factor = Units.fromPrefix(prefix)
     val convertedValue = newValue / factor
     Log.d("updateValue", "$valueName: $newValue -> $convertedValue $prefix")
     when (valueName) {
         "R" -> {
-            state.value.R.value = convertedValue.toString()
-            state.unit.R.value = createUnit(newValue, suffix)
+            state.value.r.value = convertedValue.toString()
+            state.unit.r.value = createUnit(newValue, suffix)
         }
         "I" -> {
-            state.value.I.value = convertedValue.toString()
-            state.unit.I.value = createUnit(newValue, suffix)
+            state.value.i.value = convertedValue.toString()
+            state.unit.i.value = createUnit(newValue, suffix)
         }
         "U" -> {
-            state.value.U.value = convertedValue.toString()
-            state.unit.U.value = createUnit(newValue, suffix)
+            state.value.u.value = convertedValue.toString()
+            state.unit.u.value = createUnit(newValue, suffix)
         }
         "P" -> {
-            state.value.P.value = convertedValue.toString()
-            state.unit.P.value = createUnit(newValue, suffix)
+            state.value.p.value = convertedValue.toString()
+            state.unit.p.value = createUnit(newValue, suffix)
         }
     }
 }
