@@ -22,13 +22,13 @@ import com.simdamdev.calculohm.components.InputCard
 import com.simdamdev.calculohm.components.OhmCircle
 import com.simdamdev.calculohm.ui.theme.CalculOhmTheme
 import com.simdamdev.calculohm.utils.State
-import com.simdamdev.calculohm.utils.calculate
 import com.simdamdev.calculohm.utils.exactlyTwoChecked
+import com.simdamdev.calculohm.utils.updateValues
 
-val RES_UNIT = listOf("mΩ","Ω", "kΩ", "MΩ", "GΩ")
-val VOL_UNIT = listOf("mV","V", "kV", "MV", "GV")
-val AMP_UNIT = listOf("mA","A", "kA", "MA", "GA")
-val POW_UNIT = listOf("mW","W", "kW", "MW", "GW")
+val RES_UNIT = listOf("nΩ", "µΩ", "mΩ", "Ω", "kΩ", "MΩ", "GΩ")
+val VOL_UNIT = listOf("nV", "µV", "mV", "V", "kV", "MV", "GV")
+val AMP_UNIT = listOf("nA", "µA", "mA", "A", "kA", "MA", "GA")
+val POW_UNIT = listOf("nW", "µW", "mW", "W", "kW", "MW", "GW")
 
 
 class MainActivity : ComponentActivity() {
@@ -38,7 +38,6 @@ class MainActivity : ComponentActivity() {
             MyApp {
                 MainContent()
             }
-
         }
     }
 }
@@ -65,34 +64,32 @@ fun MainContent() {
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.Start
-    ){
+    ) {
         TopHeader()
         WarningCard(warningCardVisible.value)
         InputCards(state.value)
         Calculate(state.value)
-
 
     }
 
 }
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun TopHeader() {
     Surface(
-    modifier = Modifier
-        .fillMaxWidth()
-        .padding(15.dp)
-        .height(200.dp)
-        .clip(shape = RoundedCornerShape(corner = CornerSize(12.dp))),
-    color = Color(0xFFE9D7F7)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(15.dp)
+            .height(200.dp)
+            .clip(shape = RoundedCornerShape(corner = CornerSize(12.dp))),
+        color = Color(0xFFE9D7F7)
     ) {
         OhmCircle(
-            size= 200
+            size = 200
         )
-        InnerOhmCircle (
+        InnerOhmCircle(
             size = 80
         )
     }
@@ -102,7 +99,7 @@ fun TopHeader() {
 @Composable
 fun WarningCard(
     isVisible: Boolean
-){
+) {
     if (isVisible) {
         Surface(
             modifier = Modifier
@@ -111,19 +108,21 @@ fun WarningCard(
                 .height(60.dp)
                 .clip(shape = RoundedCornerShape(corner = CornerSize(10.dp))),
             color = Color(0xFFFFF9C4)
-        ){
+        ) {
             Text(
-                text= "Select and enter only two parameters and let the calculator handle the rest for you!",
+                text = "Select and enter only two parameters and let the calculator handle the rest for you!",
                 style = MaterialTheme.typography.body1,
                 textAlign = TextAlign.Center,
                 modifier = Modifier.padding(10.dp)
             )
         }
 
-    }else{
-        Spacer(modifier = Modifier
-            .height(60.dp)
-            .padding(15.dp))
+    } else {
+        Spacer(
+            modifier = Modifier
+                .height(60.dp)
+                .padding(15.dp)
+        )
     }
 }
 
@@ -169,13 +168,23 @@ fun InputCards(state: State) {
 fun Calculate(
     state: State,
 ) {
-
     Button(
         onClick = {
-            if (exactlyTwoChecked(state)) {
-                calculate(state)
+            if (state.checkbox.R.value) {
+                state.value.convertR()
             }
-
+            if (state.checkbox.U.value) {
+                state.value.convertU()
+            }
+            if (state.checkbox.I.value) {
+                state.value.convertI()
+            }
+            if (state.checkbox.P.value) {
+                state.value.convertP()
+            }
+            if (exactlyTwoChecked(state)) {
+                updateValues(state)
+            }
         },
         modifier = Modifier
             .padding(16.dp)
@@ -188,7 +197,6 @@ fun Calculate(
     ) {
         Text(text = "Calculate")
     }
-
 }
 
 

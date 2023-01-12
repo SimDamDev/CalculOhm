@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
+import kotlin.math.pow
 import kotlin.math.sqrt
 
 
@@ -15,12 +16,10 @@ class ColorList(
 )
 
 class State(
-    // holds checkbox state information
     val checkbox: CheckboxState = CheckboxState(),
-    // holds value state information
-    val value: ValueState = ValueState(),
-    // holds unit state information
-    val unit: UnitState = UnitState()
+    val unit: UnitState = UnitState(),
+    val value: ValueState = ValueState(unit= unit),
+
 ) {
     /**
      * CheckboxState - Inner class which holds the checkbox state information
@@ -49,11 +48,49 @@ class State(
      *
      */
     class ValueState(
-        var r: MutableState<String> = mutableStateOf(""),
-        var i: MutableState<String> = mutableStateOf(""),
-        var u: MutableState<String> = mutableStateOf(""),
-        var p: MutableState<String> = mutableStateOf("")
-    )
+        var R: MutableState<String> = mutableStateOf(""),
+        var I: MutableState<String> = mutableStateOf(""),
+        var U: MutableState<String> = mutableStateOf(""),
+        var P: MutableState<String> = mutableStateOf(""),
+        var R_transformed: MutableState<Double> = mutableStateOf(0.0),
+        var I_transformed: MutableState<Double> = mutableStateOf(0.0),
+        var U_transformed: MutableState<Double> = mutableStateOf(0.0),
+        var P_transformed: MutableState<Double> = mutableStateOf(0.0),
+        val unit : UnitState
+    ){
+        fun convertR(): Double {
+            if (R.value == ""){
+                R.value = 0.0.toString()
+            }
+            R_transformed.value = R.value.toDouble() * unitToFactor(unit.R.value)
+            return R_transformed.value
+            }
+
+        fun convertI(): Double {
+            if (I.value == ""){
+                I.value = 0.0.toString()
+            }
+            I_transformed.value = I.value.toDouble() * unitToFactor(unit.I.value)
+            return I_transformed.value
+            }
+
+        fun convertU(): Double {
+            if (U.value == ""){
+                U.value = 0.0.toString()
+            }
+            U_transformed.value = U.value.toDouble() * unitToFactor(unit.U.value)
+            return U_transformed.value
+            }
+
+        fun convertP(): Double {
+            if (P.value == ""){
+                P.value = 0.0.toString()
+            }
+            P_transformed.value = P.value.toDouble() * unitToFactor(unit.P.value)
+            return P_transformed.value
+            }
+        }
+
 
     /**
      * UnitState - Inner class which holds the unit state information
@@ -190,94 +227,107 @@ fun createUnit(n: Double, suffix: String): String {
     return if (prefix.isEmpty()) suffix else "$prefix$suffix"
 }
 
-fun calculate(state: State) {
-    var rFactor = unitToFactor(state.unit.r.value)
-    var iFactor = unitToFactor(state.unit.i.value)
-    var uFactor = unitToFactor(state.unit.u.value)
-    var pFactor = unitToFactor(state.unit.p.value)
-    val rTemp = state.value.r.value.toDoubleOrNull()?.times(rFactor)
-    val iTemp = state.value.i.value.toDoubleOrNull()?.times(iFactor)
-    val uTemp = state.value.u.value.toDoubleOrNull()?.times(uFactor)
-    val pTemp = state.value.p.value.toDoubleOrNull()?.times(pFactor)
+fun calculateR(u: Double?, i: Double?, p:Double?): Double {
+    return when {
+        i != null && u != null && u != 0.0 && i != 0.0 -> u / i
+        p != null && u != null && u != 0.0 && p != 0.0 -> u.pow(2) / p
+        p != null && i != null && p != 0.0 && i != 0.0 -> p / i.pow(2)
+        else -> 0.0
+    }
+}
 
-    // Calculate unknown variables using Ohm's law
-    if (state.checkbox.r.value && state.checkbox.i.value) {
-        if (rTemp != null && iTemp != null) {
-            val u = rTemp * iTemp
-            val p = u * iTemp
-            val uUnit = createUnit(u, "V")
-            state.unit.u.value = uUnit
-            uFactor = unitToFactor(uUnit)
-            state.value.u.value = (u / uFactor).toString()
-            val pUnit = createUnit(p, "W")
-            state.unit.p.value = pUnit
-            pFactor = unitToFactor(pUnit)
-            state.value.p.value = (p / pFactor).toString()
+fun calculateI(u: Double?, r: Double?, p:Double?): Double {
+    Log.d("calculateI", "u=$u, r=$r, p=$p")
+    return when {
+        r != null && u != null && u != 0.0 && r != 0.0 -> u / r
+        p != null && u != null && u != 0.0 && p != 0.0 -> p / u
+        p != null && r != null && p != 0.0 && r != 0.0 -> sqrt(p / r)
+        else -> 0.0
+    }
+}
+
+fun calculateU(r: Double?, i: Double?, p:Double?): Double {
+    return when {
+        i != null && r != null && i != 0.0 && r != 0.0 -> r * i
+        p != null && r != null && p != 0.0 && r != 0.0 -> sqrt(p * r)
+        p != null && i != null && p != 0.0 && i != 0.0 -> p / i
+        else -> 0.0
+    }
+}
+
+fun calculateP(u: Double?, i: Double?, r:Double?): Double {
+    return when {
+        u != null && i != null && u != 0.0 && i != 0.0 -> u * i
+        u != null && r != null && u != 0.0 && r != 0.0 -> u.pow(2) / r
+        i != null && r != null && i != 0.0 && r != 0.0 -> i.pow(2) * r
+        else -> 0.0
+    }
+}
+
+
+fun findMissing(state: State): List<String> {
+    val checkboxValues = extractCheckboxValues(state)
+    val list = listOf("R", "I", "U", "P").filterIndexed { index, _ -> !checkboxValues[index] }
+    Log.d("findMissing", list.toString())
+    return list
+}
+
+fun updateValues(state: State) {
+    val u = state.value.U_transformed.value
+    val i = state.value.I_transformed.value
+    val r = state.value.R_transformed.value
+    val p = state.value.P_transformed.value
+    val missing = findMissing(state)
+    if (missing.contains("R")) {
+        val newR = calculateR(u, i, p)
+        updateValue(state, "R", newR)
+    }
+    if (missing.contains("I")) {
+        val newI = calculateI(u, r, p)
+        updateValue(state, "I", newI)
+    }
+    if (missing.contains("U")) {
+        val newU = calculateU(i, r, p)
+        updateValue(state, "U", newU)
+    }
+    if (missing.contains("P")) {
+        val newP = calculateP(u, i, r)
+        updateValue(state, "P", newP)
+    }
+}
+
+fun updateValue(state: State, valueName: String, newValue: Double) {
+    val suffix =
+        when (valueName) {
+            "R" -> "Ω"
+            "I" -> "A"
+            "U" -> "V"
+            "P" -> "W"
+            else -> ""
         }
-    } else if (state.checkbox.r.value && state.checkbox.u.value) {
-        if (rTemp != null && uTemp != null) {
-            val i = uTemp / rTemp
-            val p = uTemp * i
-            val iUnit = createUnit(i, "A")
-            state.unit.i.value = iUnit
-            iFactor = unitToFactor(iUnit)
-            state.value.i.value = (i / iFactor).toString()
-            val pUnit = createUnit(p, "W")
-            state.unit.p.value = pUnit
-            pFactor = unitToFactor(pUnit)
-            state.value.p.value = (p / pFactor).toString()
+    val prefix = Units.fromFactor(newValue)
+    val factor = Units.fromPrefix(prefix).factor
+    val convertedValue = newValue / factor
+    Log.d("updateValue", "$valueName: $newValue -> $convertedValue $prefix")
+    when (valueName) {
+        "R" -> {
+            state.value.R.value = convertedValue.toString()
+            state.unit.R.value = createUnit(newValue, suffix)
         }
-    } else if (state.checkbox.r.value && state.checkbox.p.value) {
-        if (rTemp != null && pTemp != null) {
-            val i = sqrt(pTemp / rTemp)
-            val u = rTemp * i
-            val iUnit = createUnit(i, "A")
-            state.unit.i.value = iUnit
-            iFactor = unitToFactor(iUnit)
-            state.value.i.value = (i / iFactor).toString()
-            val uUnit = createUnit(u, "V")
-            state.unit.u.value = uUnit
-            uFactor = unitToFactor(uUnit)
-            state.value.u.value = (u / uFactor).toString()
+        "I" -> {
+            state.value.I.value = convertedValue.toString()
+            state.unit.I.value = createUnit(newValue, suffix)
         }
-    } else if (state.checkbox.i.value && state.checkbox.u.value) {
-        if (iTemp != null && uTemp != null) {
-            val p = iTemp * uTemp
-            val r = uTemp / iTemp
-            val pUnit = createUnit(p, "W")
-            state.unit.p.value = pUnit
-            pFactor = unitToFactor(pUnit)
-            state.value.p.value = (p / pFactor).toString()
-            val rUnit = createUnit(r, "Ω")
-            state.unit.r.value = rUnit
-            rFactor = unitToFactor(rUnit)
-            state.value.r.value = (r / rFactor).toString()
+        "U" -> {
+            state.value.U.value = convertedValue.toString()
+            state.unit.U.value = createUnit(newValue, suffix)
         }
-    } else if (state.checkbox.i.value && state.checkbox.p.value) {
-        if (iTemp != null && pTemp != null) {
-            val u = pTemp / iTemp
-            val r = u / iTemp
-            val uUnit = createUnit(u, "V")
-            state.unit.u.value = uUnit
-            uFactor = unitToFactor(uUnit)
-            state.value.u.value = (u / uFactor).toString()
-            val rUnit = createUnit(r, "Ω")
-            state.unit.r.value = rUnit
-            rFactor = unitToFactor(rUnit)
-            state.value.r.value = (r / rFactor).toString()
-        }
-    } else if (state.checkbox.u.value && state.checkbox.p.value) {
-        if (uTemp != null && pTemp != null) {
-            val i = pTemp / uTemp
-            val r = uTemp / i
-            val iUnit = createUnit(i, "A")
-            state.unit.i.value = iUnit
-            iFactor = unitToFactor(iUnit)
-            state.value.i.value = (i / iFactor).toString()
-            val rUnit = createUnit(r, "Ω")
-            state.unit.r.value = rUnit
-            rFactor = unitToFactor(rUnit)
-            state.value.r.value = (r / rFactor).toString()
+        "P" -> {
+            state.value.P.value = convertedValue.toString()
+            state.unit.P.value = createUnit(newValue, suffix)
+
         }
     }
 }
+
+
