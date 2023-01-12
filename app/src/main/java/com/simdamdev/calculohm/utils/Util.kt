@@ -1,165 +1,10 @@
 package com.simdamdev.calculohm.utils
 
 import android.util.Log
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.graphics.Color
 import kotlin.math.pow
 import kotlin.math.sqrt
 
 
-class ColorList(
-    val col1: Color,
-    val col2: Color,
-    val col3: Color,
-    val col4: Color,
-)
-
-class State(
-    val checkbox: CheckboxState = CheckboxState(),
-    val unit: UnitState = UnitState(),
-    val value: ValueState = ValueState(unit= unit),
-
-) {
-    /**
-     * CheckboxState - Inner class which holds the checkbox state information
-     * @property r holds R checkbox state information
-     * @property i holds I checkbox state information
-     * @property u holds U checkbox state information
-     * @property p holds P checkbox state information
-     *
-     */
-    class CheckboxState(
-        var r: MutableState<Boolean> = mutableStateOf(false),
-        var i: MutableState<Boolean> = mutableStateOf(false),
-        var u: MutableState<Boolean> = mutableStateOf(false),
-        var p: MutableState<Boolean> = mutableStateOf(false)
-    ){
-        // List of all checkbox states
-        val checkboxList : List<MutableState<Boolean>> = listOf(r,i,u,p)
-    }
-
-    /**
-     * ValueState - Inner class which holds the value state information
-     * @property r holds R value state information
-     * @property i holds I value state information
-     * @property u holds U value state information
-     * @property p holds P value state information
-     *
-     */
-    class ValueState(
-        var R: MutableState<String> = mutableStateOf(""),
-        var I: MutableState<String> = mutableStateOf(""),
-        var U: MutableState<String> = mutableStateOf(""),
-        var P: MutableState<String> = mutableStateOf(""),
-        var R_transformed: MutableState<Double> = mutableStateOf(0.0),
-        var I_transformed: MutableState<Double> = mutableStateOf(0.0),
-        var U_transformed: MutableState<Double> = mutableStateOf(0.0),
-        var P_transformed: MutableState<Double> = mutableStateOf(0.0),
-        val unit : UnitState
-    ){
-        fun convertR(): Double {
-            if (R.value == ""){
-                R.value = 0.0.toString()
-            }
-            R_transformed.value = R.value.toDouble() * unitToFactor(unit.R.value)
-            return R_transformed.value
-            }
-
-        fun convertI(): Double {
-            if (I.value == ""){
-                I.value = 0.0.toString()
-            }
-            I_transformed.value = I.value.toDouble() * unitToFactor(unit.I.value)
-            return I_transformed.value
-            }
-
-        fun convertU(): Double {
-            if (U.value == ""){
-                U.value = 0.0.toString()
-            }
-            U_transformed.value = U.value.toDouble() * unitToFactor(unit.U.value)
-            return U_transformed.value
-            }
-
-        fun convertP(): Double {
-            if (P.value == ""){
-                P.value = 0.0.toString()
-            }
-            P_transformed.value = P.value.toDouble() * unitToFactor(unit.P.value)
-            return P_transformed.value
-            }
-        }
-
-
-    /**
-     * UnitState - Inner class which holds the unit state information
-     * @property r holds R unit state information
-     * @property i holds I unit state information
-     * @property u holds U unit state information
-     * @property p holds P unit state information
-     *
-     */
-    class UnitState(
-        var r: MutableState<String> = mutableStateOf(""),
-        var i: MutableState<String> = mutableStateOf(""),
-        var u: MutableState<String> = mutableStateOf(""),
-        var p: MutableState<String> = mutableStateOf("")
-    )
-}
-
-
-/**
- * Units : enumeration class that stores the factors of various SI prefixes.
- * The available prefixes are:
- * - NANO : prefix for 0.000000001
- * - MICRO : prefix for 0.000001
- * - MILLI : prefix for 0.001
- * - UNITY : prefix for 1.0 (default)
- * - KILO : prefix for 1000.0
- * - MEGA : prefix for 1000000.0
- * - GIGA : prefix for 1000000000.0
- * The companion object provides two methods:
- *  - fromPrefix(prefix: String): Units  that allows to find the corresponding
- *          Units instance given a string 'prefix'
- *  - fromFactor(number: Double): String that allows to find the corresponding
- *          prefix given a number
- */
-enum class Units(val factor: Double) {
-    NANO(0.000000001),
-    MICRO(0.000001),
-    MILLI(0.001),
-    UNITY(1.0),
-    KILO(1000.0),
-    MEGA(1000000.0),
-    GIGA(1000000000.0);
-
-    companion object {
-        fun fromPrefix(prefix: String): Units {
-            return when (prefix) {
-                "n" -> NANO
-                "µ" -> MICRO
-                "m" -> MILLI
-                "k" -> KILO
-                "M" -> MEGA
-                "G" -> GIGA
-                else -> UNITY
-            }
-        }
-
-        fun fromFactor(number: Double): String {
-            return when {
-                number < 0.000001 -> "n"
-                number < 0.001 -> "µ"
-                number < 1.0 -> "m"
-                number > 999999999.99 -> "G"
-                number > 999999.99 -> "M"
-                number > 999.99 -> "k"
-                else -> ""
-            }
-        }
-    }
-}
 
 /**
  * exactlyTwoTrue : check if exactly two input booleans are true
@@ -325,7 +170,6 @@ fun updateValue(state: State, valueName: String, newValue: Double) {
         "P" -> {
             state.value.P.value = convertedValue.toString()
             state.unit.P.value = createUnit(newValue, suffix)
-
         }
     }
 }
