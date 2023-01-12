@@ -136,30 +136,30 @@ fun InputCards(state: State) {
     InputCard(
         labelId = "Resistance (R)",
         unitOptions = unitOptionsR,
-        checkboxState = state.checkbox.R,
-        valueState = state.value.R,
-        unitState = state.unit.R,
+        checkboxState = state.checkbox.r,
+        valueState = state.value.r,
+        unitState = state.unit.r,
     )
     InputCard(
         labelId = "Power (P)",
         unitOptions = unitOptionsP,
-        checkboxState = state.checkbox.P,
-        valueState = state.value.P,
-        unitState = state.unit.P,
+        checkboxState = state.checkbox.p,
+        valueState = state.value.p,
+        unitState = state.unit.p,
     )
     InputCard(
         labelId = "Voltage (U)",
         unitOptions = unitOptionsU,
-        checkboxState = state.checkbox.U,
-        valueState = state.value.U,
-        unitState = state.unit.U,
+        checkboxState = state.checkbox.u,
+        valueState =  state.value.u,
+        unitState = state.unit.u,
     )
     InputCard(
         labelId = "Current (I)",
         unitOptions = unitOptionsI,
-        checkboxState = state.checkbox.I,
-        valueState = state.value.I,
-        unitState = state.unit.I,
+        checkboxState =  state.checkbox.i,
+        valueState = state.value.i,
+        unitState = state.unit.i,
     )
     exactlyTwoChecked(state)
 }
